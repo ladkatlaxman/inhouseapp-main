@@ -1,0 +1,33 @@
+﻿<%@ Page Language="C#" %>
+
+<!DOCTYPE html>
+
+<script runat="server">
+using System.Net;
+using System.IO; 
+using System.Web;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        Uri u = new Uri(@"http://launcher.worldofwarcraft.com/alert");
+        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(u);
+        HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+        System.IO.Stream st = res.GetResponseStream();
+        System.IO.StreamReader sr = new System.IO.StreamReader(st);
+        string body = sr.ReadToEnd();
+        System.Console.WriteLine("{0}", body);
+    }
+</script>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+                <asp:Label runat="server" ID="lblResponse"></asp:Label>
+        </div>
+    </form>
+</body>
+</html>

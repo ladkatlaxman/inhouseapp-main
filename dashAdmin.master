@@ -1,0 +1,264 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="dashAdmin.master.cs" Inherits="dashAdmin" %>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Company Dashboard</title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <style>
+        .dropdown-submenu {
+            position: relative;
+        }
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-submenu > a:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-left-color: #ccc;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+
+            .dropdown-submenu:hover > a:after {
+                border-left-color: #fff;
+            }
+
+            .dropdown-submenu.pull-left {
+                float: none;
+            }
+
+                .dropdown-submenu.pull-left > .dropdown-menu {
+                    left: 100%; /*left: -100%;*/
+                    margin-left: 10px;
+                    -webkit-border-radius: 6px 0 6px 6px;
+                    -moz-border-radius: 6px 0 6px 6px;
+                    border-radius: 6px 0 6px 6px;
+                }
+
+        .nav-item:hover {
+            background-color: #ecf0f3 !important;
+            cursor: pointer;
+        }
+
+        .txtBold {
+            font-weight: bold;
+            color: black;
+            font-size: 14px;
+        }
+
+        @media (min-width:320px) {
+            smartphones, iPhone, portrait 480x320 phones .dropdown-submenu:hover > .dropdown-menu {
+                display: none;
+            }
+
+            #navbar-nav-right {
+                display: none;
+            }
+
+            #navbar-nav-right2 {
+                display: block;
+            }
+        }
+
+        @media (min-width:481px) {
+            portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. .dropdown-submenu:hover > .dropdown-menu {
+                display: none;
+            }
+
+            #navbar-nav-right {
+                display: none;
+            }
+
+            #navbar-nav-right2 {
+                display: block;
+            }
+        }
+
+        @media (min-width:641px) {
+            portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones .dropdown-submenu:hover > .dropdown-menu {
+                display: none;
+            }
+
+            #navbar-nav-right {
+                display: none;
+            }
+
+            #navbar-nav-right2 {
+                display: block;
+            }
+        }
+
+        @media (min-width:900px) {
+            tablet, landscape iPad, lo-res laptops ands desktops .dropdown-submenu:hover > .dropdown-menu {
+                display: none;
+            }
+
+            #navbar-nav-right {
+                display: none;
+            }
+
+            #navbar-nav-right2 {
+                display: block;
+            }
+        }
+
+        @media (min-width:1090px) {
+            #navbar-nav-right2 {
+                display: none;
+            }
+
+            #navbar-nav-right {
+                display: block;
+            }
+        }
+
+        @media (min-width:1087px) {
+            #navbar-nav-right2 {
+                display: none;
+            }
+
+            #navbar-nav-right {
+                display: block;
+            }
+        }
+
+        @media screen and (min-width:768px) and (max-width:1086px) {
+            #navbar-nav-right {
+                display: none;
+            }
+
+            #navbar-nav-right2 {
+                display: block;
+            }
+
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: none;
+            }
+            /*#mainBody   { background-color: #0F0 }*/
+        }
+
+        @media screen and (min-width:768px) and (max-width:851px) {
+            /*#mainBody   { background-color: #000 }*/
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: none;
+            }
+        }
+
+        @media (min-width:1281px) {
+            hi-res laptops and desktops .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+
+            #navbar-nav-right2 {
+                display: none;
+            }
+
+            #navbar-nav-right {
+                display: block;
+            }
+        }
+    </style>
+
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+    <!--For Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <!--For Menu-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="bootstrap(11)1087px/css/bootstrap.css" rel="stylesheet" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link href="css/FormStyle.css" rel="stylesheet" />
+    <link href="css/ActiveCurrentTab.css" rel="stylesheet" />
+    <link href="css/AlertNotification.css" rel="stylesheet" />
+    <link href="css/MultipleSelectionDropDwonList.css" rel="stylesheet" />
+    <link href="css/LoadingImage.css" rel="stylesheet" />
+    <!--Style-->
+    <link href="css/Style.css" rel="stylesheet" />
+    <link href="css/SideBar_QuickLink.css" rel="stylesheet" />
+    <style>
+        .multiHeigh {
+            max-height: 200px;
+            overflow: auto;
+        }
+
+        .overflow {
+            height: 200px;
+        }
+    </style>
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/jquery/jquery.ui.min.js"></script>
+    <link href="css/jquery/jquery.ui.css" rel="stylesheet" />
+</head>
+<body class="navbar-default">
+    <form id="form1" runat="server">
+        <div style="display: none;">
+            <asp:FileUpload ID="FileUpload1" runat="server" />
+            <asp:FileUpload runat="server" ID="fileupload" />
+        </div>
+        <!--Header Menu-->
+        <nav class="navbar navbar-collapse navbar-fixed-top" id="NavBar" style="background-color: white;" runat="server">
+            <div>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" id="ToggleBtn1" style="border: 1px solid #ccc;" title="Menu" runat="server" data-toggle="collapse" data-target="#menuNavbar">
+                        <span class="icon-bar" style="background-color: #000"></span>
+                        <span class="icon-bar" style="background-color: #000"></span>
+                        <span class="icon-bar" style="background-color: #000"></span>
+                    </button>
+                    <a href="#" class=" nav navbar-left">
+                        <img src="images/dexterLogo.png" style="height: 50px;" /></a>
+                </div>
+                <!--Right navbar-->
+                <div class="collapse navbar-collapse myNav" id="menuNavbar">
+                    <ul class="nav navbar-nav navbar-left" id="navbar-nav">
+                        <li class="nav-item txtBold">
+                           <a href="Dash.aspx">Sales</a>
+                        </li>
+                        <li class="nav-item txtBold">
+                            <a href="Dash.aspx?Type=O">Operations</a>
+                        </li>
+                         <li class="nav-item txtBold">
+                            <a href="Dash.aspx?Type=P">Pending Items</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </nav>
+        <!--End-->
+
+        <!---Main Content--->
+        <div id="mainBody" class="container-fluid mainPart">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <!---Main Content End----->
+    </form>
+    <!----Active Next Tab------>
+    <script src="js/ActiveCurrentTab.js"></script>
+    <!---Move.JS--->
+    <script src="js/Move.js"></script>
+    <!--Move.JS End--->
+    <script src="js/TextBoxValidation.js?3"></script>
+    <script src="js/AlertNotifictaion.js"></script>
+</body>
+</html>
+

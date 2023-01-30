@@ -1,0 +1,198 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/AdminMasterPage.master" AutoEventWireup="true" CodeFile="EWaybillUpdate.aspx.cs" Inherits="EWaybillUpdate" Async="true"%>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="css/AlertNotification.css" rel="stylesheet" />
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+<script>
+      var gridView = '#<%= gvWayBills.ClientID %>';
+            function checkPickAll(selectAllCheckbox) {
+                //get all checkboxes within item rows and select/deselect based on select all checked status            
+                $('td :checkbox', gridView).prop("checked", selectAllCheckbox.checked);
+            }
+            function unCheckPickSelectAll(selectCheckbox) {
+                //if any item is unchecked, uncheck header checkbox as well
+                if (!selectCheckbox.checked)
+                    $('th :checkbox', gridView).prop("checked", false);
+            }
+</script>
+    <%--<!---Update Progress 1 ---->
+    <asp:UpdateProgress ID="UpdateProgress_Ewaybill" AssociatedUpdatePanelID="UpdatePanel_Ewaybill" runat="server" DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="overlay">
+                <div id="modalprogress">
+                    <div id="theprogress">
+                        <img src="images/dots-4.gif" />
+                    </div>
+                </div>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>--%>
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <div id="AlertNotification"></div>
+    <div class="panel panelTop" runat="server">
+        <div class="panel-heading panelHead">
+            <b>UPDATE E-WAYBILL DATE</b>
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal" role="form">
+                 <div class="form-group">
+                    <div class="row">                   
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2"></div>
+                        <div class="col-xs-5 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="form-control-sm"></div>
+                            <asp:Label ID="Lbl_Select" runat="server" CssClass="label labelColor">SELECT</asp:Label>
+                            <asp:DropDownList ID="Ddl_Select" runat="server" CssClass="formDisplay input-sm Ddl_Select" TabIndex="1" AutoPostBack="true" OnSelectedIndexChanged="Ddl_Select_SelectedIndexChanged">
+                                <asp:ListItem>IN VEHICLE</asp:ListItem>
+				<asp:ListItem>IN STOCK</asp:ListItem> 
+                            </asp:DropDownList>
+                        </div>
+                         <div class="col-xs-5 col-sm-6 col-md-4 col-lg-3 col-xl-2" id="vehicleDiv" runat="server" visible="false">
+                            <div class="form-control-sm"></div>
+                            <asp:Label ID="Lbl_VehicleNo" runat="server" CssClass="label labelColor">VEHICLE NO</asp:Label>
+                            <asp:DropDownList ID="Ddl_vehicleNo" runat="server" CssClass="formDisplay input-sm Ddl_vehicleNo" TabIndex="1">                              
+                            </asp:DropDownList>
+                        </div>
+                        <div class="col-xs-5 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="form-control-lg"></div>
+                            <div class="form-control-lg"></div>
+                            <div class="form-control-sm"></div>
+                            <asp:LinkButton ID="Btn_Search" runat="server" CssClass="btn btn-info largeButtonStyle Btn_Search" OnClick="Btn_Search_Click">SEARCH</asp:LinkButton>
+                        </div>
+                    </div>
+                </div>
+                <div id="DivGrid" runat="server" visible="false">
+                    <div class="form-group">
+                        <asp:GridView ID="gvWayBills" runat="server" AutoGenerateColumns="False" CssClass="table table-condensed table-bordered table-hover table-responsive" OnRowDataBound="GridView_RowDataBound">
+                            <Columns>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:CheckBox ID="chk_selectall" onclick="checkPickAll(this);" runat="server" />
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chk_select" runat="server" onclick="unCheckPickSelectAll(this);" />
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" />
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="SR.NO" HeaderStyle-Width="5%" HeaderStyle-HorizontalAlign="Left">
+                                    <ItemTemplate>
+                                        <%# Container.DataItemIndex + 1 %>
+                                    </ItemTemplate>
+                                    <HeaderStyle CssClass="table_04 gvHeaderStyle" HorizontalAlign="Center"></HeaderStyle>
+                                    <ItemStyle CssClass="table_02 gvItemStyle" HorizontalAlign="Center"></ItemStyle>
+                                </asp:TemplateField>
+                                <asp:BoundField DataField="vehicleNo" HeaderText="VEHICLE NO">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" ForeColor="Black" Wrap="false" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="waybillNo" HeaderText="WAYBILL NO">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" ForeColor="Black" Wrap="false" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="WaybillDate" HeaderText="WAYBILL DATE">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" Wrap="false" ForeColor="Black" />
+                                    <ItemStyle HorizontalAlign="Center" Wrap="false" CssClass="gvItemStyle" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="PickupAddress" HeaderText="CONSIGNOR ADDRESS">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header hidden gvHeaderStyle" ForeColor="Black" Wrap="true" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle hidden" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="ConsigneeAddress" HeaderText="CONSIGNEE ADDRESS">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header hidden gvHeaderStyle" Wrap="true" ForeColor="Black" />
+                                    <ItemStyle HorizontalAlign="Center" Wrap="false" CssClass="gvItemStyle hidden" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="InvoiceNo" HeaderText="INVOICE NO">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" Wrap="false" ForeColor="Black" />
+                                    <ItemStyle HorizontalAlign="Center" Wrap="false" CssClass="gvItemStyle" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="invoiceAmount" HeaderText="INVOICE AMT">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" Wrap="false" ForeColor="Black" />
+                                    <ItemStyle HorizontalAlign="Center" Wrap="false" CssClass="gvItemStyle" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="itemQty" HeaderText="ITEM QTY">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" Wrap="false" ForeColor="Black" />
+                                    <ItemStyle HorizontalAlign="Center" Wrap="false" CssClass="gvItemStyle" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="eWayBillNo" HeaderText="E-WAYBILL NO">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" ForeColor="Black" Wrap="false" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="eWayBillDate" HeaderText="E-WAYBILL<br>DATE" HtmlEncode="false">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" ForeColor="Black" Wrap="false" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="eWayBillExpiryDate" HeaderText="E-WAYBILL<br>EXPIRY DATE" HtmlEncode="false">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" Wrap="false" ForeColor="Black" />
+                                    <ItemStyle HorizontalAlign="Center" Wrap="false" CssClass="gvItemStyle" />
+                                </asp:BoundField>
+                                <asp:TemplateField HeaderText="DISTANCE">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblDistance" runat="server"></asp:Label>
+                                    </ItemTemplate>
+                                     <HeaderStyle HorizontalAlign="Center" CssClass="th-header gvHeaderStyle" ForeColor="Black" Wrap="false" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle" Wrap="false" ForeColor="Black"/>
+                                </asp:TemplateField>
+                                <asp:BoundField DataField="PickupCity" HeaderText="PICKUP CITY">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header hidden gvHeaderStyle" ForeColor="Black" Wrap="true" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle hidden" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="PickupPincode" HeaderText="PICKUP PINCODE">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header hidden gvHeaderStyle" ForeColor="Black" Wrap="true" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle hidden" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="EWayBillStateCode" HeaderText="E-WAYBILL STATE CODE">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header hidden gvHeaderStyle" ForeColor="Black" Wrap="true" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle hidden" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="consigneeAddress" HeaderText="DELIVERY ADDRESS">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header hidden gvHeaderStyle" ForeColor="Black" Wrap="true" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle hidden" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="DelCity" HeaderText="DELIVERY CITY">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header hidden gvHeaderStyle" ForeColor="Black" Wrap="true" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle hidden" Wrap="false" />
+                                </asp:BoundField>
+                                <asp:BoundField DataField="DelPincode" HeaderText="DELIVERY PINCODE">
+                                    <HeaderStyle HorizontalAlign="Center" CssClass="th-header hidden gvHeaderStyle" ForeColor="Black" Wrap="true" />
+                                    <ItemStyle HorizontalAlign="Center" CssClass="gvItemStyle hidden" Wrap="false" />
+                                </asp:BoundField>                                
+                                <asp:TemplateField ConvertEmptyStringToNull="True">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblResult" runat="server" Text='' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <HeaderStyle HorizontalAlign="Center" />
+                        </asp:GridView>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <asp:Label ID="lblResponse" runat="server" ForeColor="Red" Font-Bold="true"></asp:Label>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                    <!--    <div class="col-xs-5 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="form-control-lg"></div>
+                            <div class="form-control-lg"></div>
+                            <div class="form-control-sm"></div>
+                            <asp:LinkButton ID="Btn_Update" runat="server" CssClass="btn btn-info largeButtonStyle Btn_Update" OnClick="Btn_Update_Click" TabIndex="21">UPDATE</asp:LinkButton> for Extension 
+                        </div> --> 
+                        <div class="col-xs-5 col-sm-6 col-md-4 col-lg-3 col-xl-3"> 
+                            <div class="form-control-lg"></div> 
+                            <div class="form-control-lg"></div> 
+                            <div class="form-control-sm"></div> 
+                            <asp:LinkButton ID="btnUpdateVehicleNo" runat="server" CssClass="btn btn-info largeButtonStyle btnUpdateVehicleNo" OnClick="btnUpdateVehicleNo_Click" TabIndex="22">UPDATE</asp:LinkButton> for Vehicle no / Part B
+                        </div> 
+                        <div class="col-xs-5 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="form-control-lg"></div>
+                            <div class="form-control-lg"></div>
+                            <div class="form-control-sm"></div>
+                            <asp:LinkButton ID="btnPrintEWayBill" runat="server" CssClass="btn btn-info largeButtonStyle btnPrintEWayBill" OnClick="btnPrintEWayBill_Click">PRINT</asp:LinkButton> E-WAY BILL(S)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/AlertNotifictaion.js"></script>
+</asp:Content>
+

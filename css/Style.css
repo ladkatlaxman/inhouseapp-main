@@ -1,0 +1,185 @@
+﻿
+/*.navbar {
+  overflow: hidden;
+  background-color: #fff;
+  
+  
+   border: 1px solid #ccc;
+  position: fixed;
+
+  top: 0;
+  width: 100%;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #000;  
+  text-align: center;
+  padding:0px 0px;
+  text-decoration: none;
+  font-size: 17px;
+  
+}
+
+.navbar a:hover {
+  background: #000;
+  color: #fff;
+}*/
+
+
+
+    /*.navbar a::after {
+   background-color:#000;
+   color:#fff;
+         }*/
+
+/*.main {
+  padding: 16px;
+  margin-top: 30px;
+  height: 1500px; /* Used in this example to enable scrolling */
+/*}*/
+
+
+
+/*.MainContent {
+    padding:16px;
+    margin-top:40px;
+    margin-left:70px;
+    margin-bottom:30px;
+    transition:0.3s;
+
+}*/
+
+
+
+.mainPart {
+    padding:16px;
+    min-height:100%;
+    height:100%;
+    margin-top:40px;
+    /*If your adding Quick Link to this project then remove below comment as:'margin-left:60px;'*/
+    /*margin-left:60px;*/
+    margin-bottom:20px;
+    transition:0.3s;
+}
+
+
+/*@media screen and (min-width:767px) and (max-width:1439px) {
+    .mainPart {
+    margin-left:0;
+    }
+}*/
+
+
+@media screen and (max-width:767px) {
+.mainPart {
+    margin-left:0;
+    }
+}
+
+/*.mainPart2 {
+
+margin-left:100px;
+
+}*/
+
+
+
+
+/*.container-fluid {
+      padding: 60px 50px;
+  }*/
+
+ footer .glyphicon {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #f4511e;
+  }
+
+
+ /*.footer  {
+
+     position:fixed;
+     left:0;
+     bottom:0;
+     text-align:center;
+     width:100%;
+          
+      color: #000;
+  }*/
+
+
+
+
+ .footer {
+   /*position: fixed;*/
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   height:5em;
+   background-color: #fff;
+   color: #000;
+   text-align: center;
+   border: 1px solid #ccc;
+
+   /*border:solid;
+   border-color:#000;*/
+
+}
+
+    .footer p {
+    align-content:center;
+    margin-top:15px;
+    
+    }
+
+
+
+ /*.notify {
+  position: relative;
+  top: -22px;
+  right: -9px;
+}*/
+
+
+
+/*@media screen and (max-height: 450px) {
+  .navbar {padding-top: 15px;}
+ 
+}*/
+
+
+
+ @media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ }
+@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
+@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
+@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
+@media (min-width:1281px) { /* hi-res laptops and desktops */ }
+
+/* Custom, iPhone Retina */ 
+    /*@media only screen and (min-width : 320px) {
+
+    }*/
+
+    /* Extra Small Devices, Phones */ 
+    /*@media only screen and (min-width : 480px) {
+
+    }*/
+
+    /* Small Devices, Tablets */
+    /*@media only screen and (min-width : 768px) {
+
+    }*/
+
+    /* Medium Devices, Desktops */
+    /*@media only screen and (min-width : 992px) {
+
+    }*/
+
+    /* Large Devices, Wide Screens */
+    /*@media only screen and (min-width : 1200px) {
+
+    }*/
+  

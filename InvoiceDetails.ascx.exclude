@@ -1,0 +1,64 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/AdminMasterPage.master" AutoEventWireup="true" CodeFile="InvoiceList.aspx.cs" Inherits="InvoiceList" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <div class="panel panelTop"> 
+        <div class="panel-heading panelHead"  runat="server" id="HeaderName">
+            <b>LIST OF CUSTOMER INVOICES</b>
+        </div>
+        <div class="panel-body labelColor">
+        <div class="row">
+            <div class="form-group">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+            <div class="form-control-sm"></div>
+            <asp:Label ID="Lbl_FromDate" runat="server" CssClass="label labelColor">FROM DATE</asp:Label>
+            <asp:TextBox ID="Txt_FromDate" runat="server" Style="text-transform: uppercase;" CssClass="form-control input-sm Txt_FromDate"></asp:TextBox>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+            <div class="form-control-sm"></div>
+            <asp:Label ID="Lbl_ToDate" runat="server" CssClass="label labelColor">TO DATE</asp:Label>
+            <asp:TextBox ID="Txt_ToDate" runat="server" Style="text-transform: uppercase" CssClass="form-control input-sm Txt_ToDate"></asp:TextBox>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+            <div class="form-control-lg"></div>
+            <div class="form-control-lg"></div>
+            <div class="form-control-sm"></div>
+            <asp:LinkButton ID="Btn_Search" runat="server" Text="GET LIST" CssClass="btn btn-info largeButtonStyle Btn_Search" OnClick="Btn_Search_Click">GET LIST</asp:LinkButton>
+        </div>
+
+       </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+                    <div class="form-control-sm">&nbsp;</div>
+                    <div class="form-text"><a href="CustomerInvoice.aspx?InvoiceId=-1">Yesterdays Collections</a></div>
+                </div>  
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+                    <div class="form-control-sm">&nbsp;</div>
+                    <div class="form-text"><a href="CustomerInvoice.aspx?InvoiceId=0">Todays Collections</a></div>
+                </div>
+                <!--<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+                    <div class="form-control-sm">&nbsp;</div>
+                    <div class="form-text"><a href="CustomerInvoice.aspx">Create New Invoice</a></div>
+                </div>--> 
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+                    <div class="form-control-sm">&nbsp;</div>
+                    <div class="form-text"><a href="CustomerWayBillList.aspx">Credit Customer List</a></div> 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="form-horizontal" role="form">
+                    <asp:GridView ID="gvFirstGrid" runat="server" AutoGenerateColumns="true" CssClass="table table-condensed table-bordered table-hover table-responsive" RowStyle-CssClass="gvItemStyle" AllowPaging="false" PagerSettings-Mode="NumericFirstLast" OnRowDataBound="gvFirstGrid_RowDataBound"> 
+                        <HeaderStyle HorizontalAlign="Center" CssClass="gvHeaderStyle" ForeColor="Black"/> 
+                    </asp:GridView>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+</asp:Content>
+

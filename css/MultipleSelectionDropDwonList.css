@@ -1,0 +1,342 @@
+﻿.ddlSearchTextBox {
+position:relative;
+display:block;
+z-index:1;
+margin-top:-6px;
+}
+
+.ddlDropDownList {
+position:inherit;
+margin-top:5px;
+}
+
+.ddlSearchTextBoxInherit {
+position:relative;
+display:block;
+z-index:1;
+margin-top:-6px;
+}
+
+.ddlDropDownListInherit {
+position:inherit;
+margin-top:5px;
+}   
+
+
+
+/*Single Searchable DropDown*/
+
+   .searchButtonSingleDropDown {
+        position:absolute; 
+        opacity:0.900;
+        /*height:30px;*/ 
+        right:30px; 
+        top:5px; 
+        /*border-color:snow;*/
+        z-index:1;
+        }
+            .searchButtonSingleDropDown:active {
+            opacity:100;
+            color:blue;
+            border-color:none;
+            }
+
+
+
+
+            .txtSearchSingleDropDown {
+        /*border-color:#000;*/
+        display:block;
+        /*width:87%;*/
+       /*background-color:ghostwhite;*/
+        }
+
+            .txtSearchSingleDropDown::after {
+            border-color:#000;
+            }      
+
+            
+            /*Single Searchable DropDown End*/
+
+
+
+
+/*Multiple Selection DropDown List*/
+
+
+/*.searchButton {
+        position:absolute; 
+        opacity:0.900;
+        /*height:30px;/ 
+        right:38px; 
+        top:11px; 
+        /*border-color:snow;/
+        z-index:1;
+        }*/
+
+.searchButtonMultipleDropDown {
+    position: absolute;
+    opacity: 0.900;
+    /*height:30px;*/
+    right: 27px;
+    top: 5px;
+    /*border-color:snow;*/
+    z-index: 1;
+}
+
+    .searchButtonMultipleDropDown:active {
+        opacity: 100;
+        color: blue;
+        border-color: none;
+    }
+
+
+/*.searchSubmitButton {
+        position:absolute; 
+        opacity:0.900;
+        /*height:30px;/ 
+        right:8px; 
+        top:11px; 
+        /*border-color:snow;/
+        z-index:1;
+        }*/
+
+.searchSubmitButtonMultiDropDown {
+    position: absolute;
+    opacity: 0.900;
+    /*height:30px;*/
+    right: -3px;
+    top: 5px;
+    /*border-color:snow;*/
+    z-index: 1;
+}
+
+    .searchSubmitButtonMultiDropDown:active {
+        opacity: 100;
+        color: blue;
+        border-color: none;
+    }
+
+.txtSearchMultiDropDown {
+    /*border-color:#000;*/
+    display: block;
+    width: 87%;
+    /*background-color:ghostwhite;*/
+}
+
+    .txtSearchMultiDropDown::after {
+        border-color: #000;
+    }
+
+
+
+
+
+@media (min-width:320px) {
+
+    /*#mainBody {background-color: #c1c;}*/
+
+    .txtSearchMultiDropDown {width: 92%;}
+
+}
+
+@media (min-width:370px) {
+
+    /*#mainBody   { background-color: #ff0 }*/
+
+     .txtSearchMultiDropDown {width: 93%;}
+}
+
+
+@media (min-width:400px) {
+    /*#mainBody   { background-color: #00f }*/
+
+    .txtSearchMultiDropDown {width: 93%;}
+}
+
+
+/*@media (min-width:420px) {
+
+    #mainBody   { background-color: #000 }
+
+
+}*/
+
+
+@media (min-width:450px) {
+
+    /*#mainBody   { background-color: #f00 }*/
+
+    .txtSearchMultiDropDown {width: 94%;}
+}
+
+
+/*@media (min-width:481px) { 
+
+                            #mainbody   { background-color: #0f0 }
+
+}*/
+
+
+
+@media (min-width:491px) { 
+
+                            /*#mainBody   { background-color: tan }*/
+        .txtSearchMultiDropDown {width: 94%;}
+   
+}
+
+
+@media (min-width:500px) {
+   
+    
+      /*#mainBody   { background-color: #f00 }*/
+
+     .txtSearchMultiDropDown {width: 95%;}
+}
+
+
+
+@media (min-width:541px) {
+   
+    
+      /*#mainBody   { background-color: #000 }*/
+
+    .txtSearchMultiDropDown {width: 95%;}
+}
+
+@media (min-width:576px) {
+    
+    
+      /*#mainBody   { background-color: #0f0 }*/
+      .txtSearchMultiDropDown {width: 89%;}
+}
+
+@media (min-width:600px) {
+    
+    
+      /*#mainBody   { background-color: #000 }*/
+
+   .txtSearchMultiDropDown {width: 91%;}
+}
+
+
+@media (min-width:690px) {
+   
+    
+      /*#mainBody   { background-color: #f00 }*/
+      .txtSearchMultiDropDown {width: 92%;}
+     
+}
+
+
+@media (min-width:768px) {
+    
+      /*#mainBody   { background-color: brown; }*/
+
+   .txtSearchMultiDropDown {width: 88%;}
+}
+
+
+
+@media (min-width:800px) {
+   
+    /*#mainBody   { background-color: antiquewhite; }*/
+ 
+    .txtSearchMultiDropDown {width: 90%;}
+}
+
+
+@media (min-width:900px) {
+    /*#mainBody   { background-color:darkgreen }*/
+  
+    .txtSearchMultiDropDown {width: 91%;}
+}
+
+@media (min-width:950px) {
+    /*#mainBody   { background-color:darkgreen }*/
+  
+    .txtSearchMultiDropDown {width: 89%;}
+}
+
+
+@media screen and (min-width:999px) and (max-width:1050px) {
+    /*#mainBody   { background-color: red }*/
+    .txtSearchMultiDropDown {width: 86%;}
+}
+
+@media (min-width:1087px) {
+    /*#mainBody   { background-color: navy }*/
+    .txtSearchMultiDropDown {width: 90%;}
+}
+
+
+/*@media (min-width:1200px) {
+
+    #mainBody   { background-color: #f01 }
+
+   
+}*/
+
+
+
+@media (min-width:1200px) {
+
+    /*#mainBody {background-color: #f0f;}*/
+
+    .txtSearchMultiDropDown {width: 84%;}
+
+    .ddlSearchTextBox {position:relative;}
+
+    .ddlDropDownList {margin-top:5px;}
+}
+
+
+
+@media (min-width:1281px) {
+
+    /*#mainBody {background-color: #0f1;}*/
+
+    .txtSearchMultiDropDown {width: 85%;}
+
+    .ddlSearchTextBox {position:relative;}
+
+    .ddlDropDownList {margin-top:5px;}
+
+}
+
+@media (min-width:1330px) {
+
+    /*#mainBody {background-color: #f0f;}*/
+
+    .txtSearchMultiDropDown {width: 85%;}
+
+    .ddlSearchTextBox {position:relative;}
+
+    .ddlDropDownList {margin-top:5px;}
+
+    /*.searchButtonSingleDropDown {right:30px; }*/
+}
+@media screen and (min-width:1331px) and (max-width:6999px){
+
+    /*#mainBody {background-color: #f0f;}*/
+
+    .txtSearchMultiDropDown {width: 86%;}
+
+    .ddlSearchTextBox {position:fixed;}
+
+    .ddlDropDownListInherit{position:relative;}
+
+    .ddlDropDownList {margin-top:25px;}
+
+    .ddlDropDownListInherit {margin-top:5px;}
+
+     .searchButtonSingleDropDown {right:30px; }
+
+    .txtSearchSingleDropDown {width:92%;}
+
+}
+
+/*Multiple Selection DropDown List End*/
+
+

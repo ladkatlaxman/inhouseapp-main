@@ -1,0 +1,337 @@
+﻿using BLFunctions;
+using BLProperties;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Net;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using TaxProEInvoice.API;
+public partial class EWaybillUpdate : System.Web.UI.Page
+{
+    //public EWBSession EwbSession = new EWBSession();
+    eInvoiceSession eInvSession = new eInvoiceSession(true, true);
+    //TxnRespWithObjAndInfo<RespVehicleNoUpdtPl> resVehicleNoUpdt; 
+    string strReturnType = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        //for .Net framework 4.5
+        //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+        Ddl_Select_SelectedIndexChanged(sender, e);
+        if (!IsPostBack)
+        {
+            if (Session["userName"] != null)
+            {
+                List<VehicleRequestProperties> vehicleList = (new VehicleRequestFunction()).getVehicleListForEwaybill(Convert.ToInt32(Session["BranchId"]));
+                //List<VehicleRequestProperties> vehicleList2 = (new VehicleRequestFunction()).ViewVehicleParkData(Convert.ToInt32(Session["BranchId"]));
+                Ddl_vehicleNo.DataSource = vehicleList; // 1.Union(vehicleList2);
+                Ddl_vehicleNo.DataTextField = "VehicleNo";
+                Ddl_vehicleNo.DataValueField = "VehicleRequestID";
+                Ddl_vehicleNo.DataBind();
+                Ddl_vehicleNo.Items.Insert(0, "SELECT");
+            }
+            else
+                Response.Redirect("Login.aspx");
+        }
+
+    }
+
+    protected void Btn_Search_Click(object sender, EventArgs e)
+    {
+        if (Ddl_Select.SelectedItem.ToString() == "IN STOCK")
+        {
+            IDataReader dr = new CommFunctions().ViewWaybillListForEwaybill(Convert.ToInt32(Session["BranchId"]));
+            gvWayBills.DataSource = dr;
+            gvWayBills.DataBind();
+            DivGrid.Visible = true;
+        }
+        else if (Ddl_Select.SelectedItem.ToString() == "IN VEHICLE")
+        {
+            IDataReader dr = new CommFunctions().ViewWaybillListForEwaybill(Convert.ToInt32(Session["BranchId"]), Ddl_vehicleNo.SelectedValue);
+            gvWayBills.DataSource = dr;
+            gvWayBills.DataBind();
+            DivGrid.Visible = true;
+        }
+        else
+        {
+            IDataReader dr = new CommFunctions().ViewWaybillListForEwaybill(Convert.ToInt32(Session["BranchId"]));
+            gvWayBills.DataSource = dr;
+            gvWayBills.DataBind();
+            DivGrid.Visible = true;
+        }
+    }
+    protected void Ddl_Select_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (Ddl_Select.SelectedItem.ToString() == "IN STOCK")
+        {
+            Ddl_vehicleNo.SelectedIndex = 0;
+            vehicleDiv.Visible = false;
+        }
+        else if (Ddl_Select.SelectedItem.ToString() == "IN VEHICLE")
+        {
+            vehicleDiv.Visible = true;
+        }
+        else
+        {
+            Ddl_vehicleNo.SelectedIndex = 0;
+            vehicleDiv.Visible = false;
+            DivGrid.Visible = false;
+        }
+    }
+
+    protected void GridView_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        Label lblName = (e.Row.FindControl("lblDistance") as Label);
+        if (lblName == null) return;
+        //if (lblName != null) lblName.Text = "abc";
+        string strConsignorArea = "", strConsigneeArea = "";
+        try
+        {
+            lblName.Text = DataBinder.Eval(e.Row.DataItem, "mapDistance").ToString();
+            return;
+            if (lblName.Text != "0.00") return;
+
+            strConsignorArea = DataBinder.Eval(e.Row.DataItem, "PickupAddress").ToString();
+            strConsigneeArea = DataBinder.Eval(e.Row.DataItem, "ConsigneeAddress").ToString();
+            lblName.Text = ""; // (new RouteMasterFunctions()).GetMapDistance(strConsignorArea, strConsigneeArea);
+            //Update mapdistance value in Waybill 
+            string waybillId = DataBinder.Eval(e.Row.DataItem, "waybillID").ToString();
+        }
+        catch (Exception ex)
+        {
+            if (lblName != null) lblName.Text = ex.Message;
+            //            throw;
+        }
+    }
+    protected void Btn_Update_Click(object sender, EventArgs e)
+    {
+        GenerateNewToken();
+        foreach (GridViewRow row in gvWayBills.Rows)
+        {
+            CheckBox chk = (row.FindControl("chk_select") as CheckBox);
+            if (chk.Checked)
+            {
+                ReqExtendValidityEWBPl reqExtValidity = new ReqExtendValidityEWBPl();
+                reqExtValidity.ewbNo = Convert.ToInt64(row.Cells[10].Text);
+                reqExtValidity.vehicleNo = row.Cells[2].Text;
+                // reqExtValidity.vehicleNo = "PVC1234";
+                reqExtValidity.fromPlace = row.Cells[14].Text;
+                reqExtValidity.fromState = Convert.ToInt32(row.Cells[16].Text);
+                Label lblName = (row.FindControl("lblDistance") as Label);
+                if (lblName != null)
+                {
+                    string distance = lblName.Text.Substring(0, lblName.Text.IndexOf("."));
+                    reqExtValidity.remainingDistance = int.Parse(distance.ToString());
+                }
+                reqExtValidity.transDocNo = "";
+                reqExtValidity.transDocDate = "";
+                reqExtValidity.extnRemarks = "";
+                reqExtValidity.extnRsnCode = 1;
+                reqExtValidity.transMode = "5";
+                reqExtValidity.fromPincode = Convert.ToInt32(row.Cells[15].Text);
+                reqExtValidity.consignmentStatus = "T";
+                reqExtValidity.transitType = "R";/*R*/
+                reqExtValidity.addressLine1 = row.Cells[17].Text; /*Bengaluru*/
+                reqExtValidity.addressLine2 = row.Cells[18].Text;
+                reqExtValidity.addressLine3 = row.Cells[19].Text;
+
+                ReqVehicleNoUpdtPl reqVehicleNo = new ReqVehicleNoUpdtPl();
+                reqVehicleNo.ewbNo = 341002177630;
+                reqVehicleNo.vehicleNo = row.Cells[2].Text; /*PVC1239*/
+                reqVehicleNo.fromPlace = "FRAZER TOWN";
+                reqVehicleNo.fromState = Convert.ToInt32(row.Cells[16].Text); // 27;
+                reqVehicleNo.reasonCode = "2";
+                reqVehicleNo.reasonRem = "";
+                reqVehicleNo.transDocNo = row.Cells[2].Text;
+                reqVehicleNo.transDocDate = "28/06/2018";
+                reqVehicleNo.transMode = "1";
+                reqVehicleNo.vehicleType = "R";
+
+                /*TxnRespWithObjAndInfo<RespVehicleNoUpdtPl> resVehicleNoUpdt = await EWBAPI.UpdateVehicleNosync(EwbSession, reqVehicleNo);
+
+                if (resVehicleNoUpdt.IsSuccess)
+                    rtbResponce.Text = JsonConvert.SerializeObject(resVehicleNoUpdt.RespObj);
+                else
+                    rtbResponce.Text = resVehicleNoUpdt.TxnOutcome;
+                txtHeading.Text = "Vehicle No. update Responce";*/
+            }
+        }
+    }
+
+
+    //private async void GenerateNewToken()
+    private void GenerateNewToken()
+    {
+        /*TxnRespWithObjAndInfo<EWBSession> TxnResp = await EWBAPI.GetAuthTokenAfter238Error(EwbSession, "");*/
+
+        //Getting the Values from the Database 
+        IDataReader dr = (new CommFunctions()).getEWayBillParameters(1);
+        while (dr.Read())
+        {
+            EwbSession.EwbApiSetting.GSPName = dr["GSPName"].ToString();
+            EwbSession.EwbApiSetting.AspUserId = dr["AspUserId"].ToString();
+            EwbSession.EwbApiSetting.AspPassword = dr["AspPassword"].ToString();
+            EwbSession.EwbApiSetting.EWBClientId = "";
+            EwbSession.EwbApiSetting.EWBClientSecret = "";
+            EwbSession.EwbApiSetting.EWBGSPUserID = "";
+            EwbSession.EwbApiSetting.BaseUrl = dr["BaseUrl"].ToString();
+
+            EwbSession.EwbApiLoginDetails.EwbGstin = dr["EwbGstin"].ToString();
+            EwbSession.EwbApiLoginDetails.EwbUserID = dr["EwbUserID"].ToString();
+            EwbSession.EwbApiLoginDetails.EwbPassword = dr["EwbPassword"].ToString();
+            EwbSession.EwbApiLoginDetails.EwbTokenExp = DateTime.Now;
+
+            EwbSession.EwbApiLoginDetails.EwbAppKey = dr["EwbAppKey"].ToString();
+            EwbSession.EwbApiLoginDetails.EwbAuthToken = dr["EwbAuthToken"].ToString();
+            EwbSession.EwbApiLoginDetails.EwbSEK = dr["EwbSEK"].ToString();
+        }
+    }
+
+    private async void ExtendValidity()
+    {
+        ReqExtendValidityEWBPl reqExtValidity = new ReqExtendValidityEWBPl();
+        reqExtValidity.ewbNo = 251259085544;
+        reqExtValidity.vehicleNo = "";
+        reqExtValidity.fromPlace = "SURVEY NO2 34 HISSA NO3 1 B1 RADHE KRISHNA BUSINESS LOGISTICS BHAWALE LONAD BHIWANDI THANE,42130";
+        reqExtValidity.fromState = 27;
+        reqExtValidity.remainingDistance = 50;
+        reqExtValidity.transDocNo = "";
+        reqExtValidity.transDocDate = "";
+        reqExtValidity.extnRemarks = "";
+        reqExtValidity.extnRsnCode = 1;
+        reqExtValidity.transMode = "5";
+        reqExtValidity.fromPincode = 421302;
+        reqExtValidity.consignmentStatus = "T";
+        reqExtValidity.transitType = "R";/*R*/
+        reqExtValidity.addressLine1 = "ZV-ASIAN PAINTS LIMITED"; /*Bengaluru*/
+        reqExtValidity.addressLine2 = "MUMBAI";
+        reqExtValidity.addressLine3 = "400055";
+
+        ////TxnRespWithObjAndInfo this method is deprecated
+        //TxnRespWithObjAndInfo<RespExtendValidityEWBPl> respExtndValidity = await EWBAPI.ExtendValidityOfEWBAsync(EwbSession, reqExtValidity);
+        //Use new method
+        TxnRespWithObjAndInfo<RespExtendValidityEWBPl> respExtndValidity = await EWBAPI.ExtendValidityOfEWBAsync(EwbSession, reqExtValidity);
+        if (respExtndValidity.IsSuccess)
+            //rtbResponce.Text = 
+            Console.Write(JsonConvert.SerializeObject(respExtndValidity.RespObj));
+        else
+        {
+            Console.Write(respExtndValidity.TxnOutcome);
+            Console.Write(Environment.NewLine + respExtndValidity.RespObj);
+            //Check for error "The distance between the pincodes given is too high"
+            if (respExtndValidity.TxnOutcome.Contains("702"))
+            {
+                RespInfoPl respInfoPl = new RespInfoPl();
+                respInfoPl = JsonConvert.DeserializeObject<RespInfoPl>(respExtndValidity.Info);
+                //You can retrive respInfoPl attributes here
+                reqExtValidity.remainingDistance = Convert.ToInt32(respInfoPl.distance);
+                //Call GenEWB API again
+                respExtndValidity = await EWBAPI.ExtendValidityOfEWBAsync(EwbSession, reqExtValidity);
+                if (respExtndValidity.IsSuccess)
+                    Console.Write(JsonConvert.SerializeObject(respExtndValidity.RespObj));
+                else
+                    Console.Write(respExtndValidity.TxnOutcome);
+            }
+
+        }
+        //txtHeading.Text = "Update Transporter Responce";
+    }
+
+
+    private async void UpdateVehicleNo(int iRowNumber, bool bCallAgain)
+    {
+        ReqVehicleNoUpdtPl reqVehicleNo = new ReqVehicleNoUpdtPl();
+        reqVehicleNo.ewbNo = Convert.ToInt64(gvWayBills.Rows[iRowNumber].Cells[10].Text);
+        reqVehicleNo.vehicleNo = gvWayBills.Rows[iRowNumber].Cells[2].Text;
+        reqVehicleNo.fromPlace = gvWayBills.Rows[iRowNumber].Cells[14].Text;
+        reqVehicleNo.fromState = Convert.ToInt32(gvWayBills.Rows[iRowNumber].Cells[16].Text); //27;
+        reqVehicleNo.reasonCode = "2";
+        reqVehicleNo.reasonRem = "Transhipment";
+        reqVehicleNo.transDocNo = gvWayBills.Rows[iRowNumber].Cells[2].Text; //2625005664 //LR180321
+        reqVehicleNo.transDocDate = DateTime.Now.ToString(@"dd\/MM\/yyyy");
+        reqVehicleNo.transMode = "1";
+        reqVehicleNo.vehicleType = "R";
+
+        /*resVehicleNoUpdt = await EWBAPI.UpdateVehicleNosync(EwbSession, reqVehicleNo);
+
+        if (resVehicleNoUpdt.IsSuccess)
+        {
+            strReturnType = JsonConvert.SerializeObject(resVehicleNoUpdt.RespObj).ToString();
+            var vUps = JsonConvert.DeserializeObject<vehicleUpdateResult>(strReturnType);
+            strReturnType = "Valid upto : " + vUps.validUpto;
+            ((Label)gvWayBills.Rows[iRowNumber].FindControl("lblResult")).Text = strReturnType; 
+        }
+        else
+        {
+            //Recall the procedure if the Token is Unauthorised. 
+            strReturnType = resVehicleNoUpdt.TxnOutcome.ToString();
+            if (strReturnType.IndexOf("238") >= 0 && bCallAgain)
+            {
+                (new CommFunctions()).SaveEWayBillAuthToken(1, EwbSession.EwbApiLoginDetails.EwbTokenExp.ToString(), EwbSession.EwbApiLoginDetails.EwbAppKey, EwbSession.EwbApiLoginDetails.EwbAuthToken, EwbSession.EwbApiLoginDetails.EwbSEK);
+                UpdateVehicleNo(iRowNumber, false);
+            }
+            
+        }*/
+    }
+
+    protected void btnUpdateVehicleNo_Click(object sender, EventArgs e)
+    {
+        GenerateNewToken();
+
+        lblResponse.Text = "";
+        foreach (GridViewRow row in gvWayBills.Rows)
+        {
+            CheckBox chk = (row.FindControl("chk_select") as CheckBox);
+            if (chk.Checked)
+            {
+                UpdateVehicleNo(row.RowIndex, true);
+            }
+        }
+    }
+
+    private class vehicleUpdateResult
+    {
+        public string vehUpdDate { get; set; }
+        public string validUpto { get; set; }
+    }
+
+    protected void btnPrintEWayBill_Click(object sender, EventArgs e)
+    {
+        GenerateNewToken();
+        foreach (GridViewRow row in gvWayBills.Rows)
+        {
+            CheckBox chk = (row.FindControl("chk_select") as CheckBox);
+            if (chk.Checked)
+            {
+		PrintEWayBill(Convert.ToInt64(row.Cells[10].Text), true);
+            }
+        }
+    }
+
+    private async void PrintEWayBill(long EwbNo, bool bCallAgain )
+    {
+	EwbNo = 291351817371; 
+        TxnRespWithObjAndInfo<RespGetEWBDetail> TxnResp = await EWBAPI.GetEWBDetailAsync(EwbSession, EwbNo);
+
+        var a = JsonConvert.SerializeObject(TxnResp.RespObj);
+        if (TxnResp.IsSuccess == true)
+        {
+            string pdfFolderPath = Server.MapPath("..\\pdf\\");
+            EWBAPI.PrintEWB(EwbSession, TxnResp.RespObj, pdfFolderPath, false, true);
+		Response.Write("<script>"); 
+		Response.Write("window.open('../pdf/" + EwbNo.ToString() + ".pdf', '_blank');");
+		Response.Write("</script>");
+        }
+        else
+        {
+            String strReturnType = TxnResp.TxnOutcome;
+            if (strReturnType.IndexOf("238") >= 0 && bCallAgain)
+            {
+                PrintEWayBill(EwbNo, false); 
+            }
+            else             lblResponse.Text += strReturnType; 
+        }
+    }
+}

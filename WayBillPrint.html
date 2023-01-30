@@ -1,0 +1,143 @@
+﻿<!--<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Way Bill No : @@WayBillNo@@</title>
+</head>
+<body>-->
+<style>
+    table, th, td {
+        border: 1px solid black;
+        font-family: Calibri;
+        border-collapse: collapse;
+        padding: 4px;
+        font-size: 14px;
+        width:100%;
+    }
+</style>
+
+<table>
+    <tr>
+        <td rowspan="4" >
+            <img src="@@logoimage@@" width="120px" />
+        </td>
+        <td colspan="2" rowspan="4">
+            <div style="font-size:x-large">Dexters Logistics Pvt Ltd</div>
+            <br />
+            Office No 101-102,
+            Rachana Epicenter
+            Pune - 411 005
+        </td>
+        <td rowspan="2">
+            From :  <br />
+            @@PickUpLocation@@
+        </td>
+        <td rowspan="2">
+            <table border="0">
+                <tr>
+                    <td>Waybill no</td>
+                </tr>
+                <tr>
+                    <td><div style="font-size:x-large">@@WayBillNo@@</div></td>
+                </tr>
+            </table>
+        </td>
+        <td rowspan="2">
+            <img src="@@imgQRCode@@" />
+        </td>
+    </tr>
+    <!--<tr>
+        <td colspan="2" rowspan="3">
+            Office No 101-102,
+            Rachana Epicenter
+            Pune - 411 005
+        </td>
+    </tr>-->
+    <tr>
+        <td rowspan="2">
+            To :<br />
+            @@DeliveryLocation@@
+        </td>
+        <td rowspan="2">
+            WayBill Date :
+        </td>
+        <td rowspan="2">
+            @@WaybillDate@@
+        </td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+        <td colspan="6">&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            Consignor :
+        </td>
+        <td colspan="2">
+            @@ConsignorName@@
+        </td>
+        <td>
+            Consignee :
+        </td>
+        <td colspan="2">
+            @@ConsigneeName@@
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Address :
+        </td>
+        <td colspan="2">
+            @@ConsignorAddress@@
+        </td>
+        <td>
+            Address :
+        </td>
+        <td colspan="2">
+            @@ConsigneeAddress@@
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Contact Person :
+        </td>
+        <td colspan="2">
+            @@ConsginorContact@@
+        </td>
+        <td>
+            Contact Person :
+        </td>
+        <td colspan="2">
+            @@ConsigneeContact@@
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6">&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="6">Material Information : </td>
+    </tr>
+    <tr>
+        <td colspan="6" style="padding:0; width:100%; border:none; border-width:0;">@@MaterialTable@@</td>
+    </tr>
+    <tr>
+        <td colspan="6">&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="3">&nbsp;</td>
+        <td>Mode of Transport : </td>
+        <td colspan="2">Surface</td>
+    </tr>
+    <tr>
+        <td colspan="6">&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="6">Declaration : This is a Computer Generated Invoice and does not require a Signature. </td>
+    </tr>
+    <tr border=0>
+        <td colspan="6">&nbsp;</td>
+    </tr>
+</table>
+<!---</body>
+</html>-->
